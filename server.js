@@ -2,8 +2,13 @@ const express = require('express');
 const cors = require('cors');
 const app = express();
 
-app.use(cors());           // <-- WICHTIG für Browseranfragen
-app.use(express.json());    // <-- Damit JSON im Body gelesen werden kann
+app.use(cors());           
+app.use(express.json());    
+
+app.get("/warmup", (req, res) => {
+  console.log("Warmup-Request – Server ist wach.");
+  res.send("OK");
+});
 
 // Beispiel: Providers
 const providers = [
@@ -32,12 +37,25 @@ const providers = [
 // POST-Route für Filter
 app.post('/filter', (req, res) => {
   const { plz, position } = req.body;
-  if (!plz || !position) return res.status(400).json({ error: 'PLZ oder Position fehlt' });
 
-  const results = providers.filter(p => p.plzs.includes(plz) && p.positions.includes(position));
+  if (!plz || !position) {
+    return res.status(400).json({ error: 'PLZ oder Position fehlt' });
+  }
+
+  console.log(`Filter-Abfrage erhalten → PLZ: ${plz}, Position: ${position}`);
+
+  const results = providers.filter(p =>
+    p.plzs.includes(plz) &&
+    p.positions.includes(position)
+  );
+
+  console.log("Gefundene Ergebnisse:", results);
+
   res.json(results);
 });
 
-// Server starten
+// ------------------------------------
+// 🚀 Server starten
+// ------------------------------------
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`Middleware läuft auf Port ${PORT}`));
