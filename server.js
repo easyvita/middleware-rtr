@@ -3,7 +3,15 @@ const cors = require('cors');
 const app = express();
 
 app.use(cors());
-app.use(express.json()); 
+app.use(express.json());
+
+// -------------------------------
+// 🔹 Warmup-Endpunkt für UptimeRobot
+// -------------------------------
+app.get("/warmup", (req, res) => {
+    console.log("Warmup-Request – Server ist wach.");
+    res.send("OK");
+});
 
 // Beispiel: Providers
 const providers = [
