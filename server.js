@@ -2,13 +2,8 @@ const express = require('express');
 const cors = require('cors');
 const app = express();
 
-app.use(cors());           
-app.use(express.json());    
-
-app.get("/warmup", (req, res) => {
-  console.log("Warmup-Request – Server ist wach.");
-  res.send("OK");
-});
+app.use(cors());
+app.use(express.json()); 
 
 // Beispiel: Providers
 const providers = [
